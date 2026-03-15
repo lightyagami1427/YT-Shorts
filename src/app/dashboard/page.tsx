@@ -2,20 +2,31 @@
 
 import { useEffect, useState } from 'react';
 import Sidebar from '@/components/Sidebar';
-import { TrendingTopic } from '@/types';
-import { ArrowRight, RefreshCw, TrendingUp, Zap, Search, Bell, HelpCircle, ChevronRight, Filter, Download, Monitor, Activity, Sparkles, LayoutGrid } from 'lucide-react';
+import { TrendingTopic, TrendCategory } from '@/types';
+import { ArrowRight, RefreshCw, TrendingUp, Zap, Search, Bell, HelpCircle, ChevronRight, Filter, Download, Monitor, Activity, Sparkles, LayoutGrid, Brain, Music, Gamepad2, FlaskConical, Tv, Flame } from 'lucide-react';
 import Link from 'next/link';
 import KpiCard from '@/components/KpiCard';
+
+const CATEGORIES: { key: string; label: string; icon: React.ReactNode; color: string }[] = [
+  { key: 'all', label: 'All Trends', icon: <Flame size={16} strokeWidth={2.5} />, color: 'from-slate-600 to-slate-800' },
+  { key: 'technology', label: 'Technology', icon: <Monitor size={16} strokeWidth={2.5} />, color: 'from-blue-500 to-cyan-500' },
+  { key: 'music', label: 'Music', icon: <Music size={16} strokeWidth={2.5} />, color: 'from-rose-500 to-pink-500' },
+  { key: 'entertainment', label: 'Entertainment', icon: <Tv size={16} strokeWidth={2.5} />, color: 'from-amber-500 to-orange-500' },
+  { key: 'viral-facts', label: '🤯 Viral Facts', icon: <Brain size={16} strokeWidth={2.5} />, color: 'from-violet-500 to-purple-500' },
+  { key: 'gaming', label: 'Gaming', icon: <Gamepad2 size={16} strokeWidth={2.5} />, color: 'from-emerald-500 to-teal-500' },
+  { key: 'science', label: 'Science', icon: <FlaskConical size={16} strokeWidth={2.5} />, color: 'from-indigo-500 to-blue-500' },
+];
 
 export default function Dashboard() {
   const [trends, setTrends] = useState<TrendingTopic[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [timeFilter, setTimeFilter] = useState<'24h' | '7d' | '30d'>('7d');
+  const [activeCategory, setActiveCategory] = useState('all');
 
   const fetchTrends = (forceRefresh = false) => {
     setLoading(true);
-    const url = `/api/trends?time=${timeFilter}${forceRefresh ? `&refresh=${Date.now()}` : ''}`;
+    const url = `/api/trends?time=${timeFilter}&category=${activeCategory}${forceRefresh ? `&refresh=${Date.now()}` : ''}`;
     fetch(url)
       .then(res => res.json())
       .then(data => {
@@ -26,7 +37,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchTrends();
-  }, [timeFilter]);
+  }, [timeFilter, activeCategory]);
 
   const kpiData = {
     '24h': {
@@ -47,12 +58,31 @@ export default function Dashboard() {
   };
   const currentKpi = kpiData[timeFilter];
 
-
-
   const handleSearch = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && searchQuery.trim()) {
       window.location.href = `/generator?topic=${encodeURIComponent(searchQuery.trim())}`;
     }
+  };
+
+  const getCategoryColor = (category?: string) => {
+    switch (category) {
+      case 'technology': return 'bg-blue-50 text-blue-600 border-blue-100';
+      case 'music': return 'bg-rose-50 text-rose-600 border-rose-100';
+      case 'entertainment': return 'bg-amber-50 text-amber-600 border-amber-100';
+      case 'viral-facts': return 'bg-violet-50 text-violet-600 border-violet-100';
+      case 'gaming': return 'bg-emerald-50 text-emerald-600 border-emerald-100';
+      case 'science': return 'bg-indigo-50 text-indigo-600 border-indigo-100';
+      default: return 'bg-slate-50 text-slate-600 border-slate-100';
+    }
+  };
+
+  const getSourceColor = (source: string) => {
+    if (source === 'Reddit') return 'bg-orange-50 text-orange-600 border-orange-100';
+    if (source === 'Google') return 'bg-blue-50 text-blue-600 border-blue-100';
+    if (source === 'YouTube') return 'bg-red-50 text-red-600 border-red-100';
+    if (source === 'NASA' || source === 'Space.com') return 'bg-sky-50 text-sky-600 border-sky-100';
+    if (source === 'Spotify' || source === 'SoundCloud') return 'bg-emerald-50 text-emerald-600 border-emerald-100';
+    return 'bg-slate-50 text-slate-600 border-slate-100';
   };
 
   return (
@@ -60,7 +90,7 @@ export default function Dashboard() {
       <Sidebar />
       <main className="main-content flex flex-col gap-12 px-12 py-16 max-w-[1600px] mx-auto">
         
-        {/* Extraordinary Top Header */}
+        {/* Top Header */}
         <header className="flex justify-between items-center bg-white/70 backdrop-blur-xl p-6 rounded-[2rem] border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.02)] sticky top-6 z-50">
           <div className="relative group">
             <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-600 transition-colors" size={20} />
@@ -144,6 +174,26 @@ export default function Dashboard() {
           </div>
         </section>
 
+        {/* Category Pills */}
+        <section className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <div className="flex items-center gap-3 overflow-x-auto pb-2 custom-scrollbar">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat.key}
+                onClick={() => setActiveCategory(cat.key)}
+                className={`flex items-center gap-2.5 px-6 py-3.5 rounded-2xl text-xs font-black uppercase tracking-widest whitespace-nowrap transition-all duration-300 border-2 ${
+                  activeCategory === cat.key
+                    ? `bg-gradient-to-r ${cat.color} text-white border-transparent shadow-lg`
+                    : 'bg-white text-slate-500 border-slate-100 hover:border-slate-200 hover:text-slate-700 shadow-sm'
+                }`}
+              >
+                {cat.icon}
+                {cat.label}
+              </button>
+            ))}
+          </div>
+        </section>
+
         {/* Intelligence Grid */}
         <section className="grid grid-cols-1 xl:grid-cols-12 gap-10 animate-in fade-in slide-in-from-bottom-8 duration-1000">
           <div className="xl:col-span-8 flex flex-col gap-8">
@@ -155,7 +205,9 @@ export default function Dashboard() {
                   </div>
                   <div>
                     <h3 className="text-2xl font-black text-[#0f172a] tracking-tight">Trending Intelligence</h3>
-                    <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-1">Cross-platform US Analysis</p>
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-1">
+                      {activeCategory === 'all' ? 'Cross-platform US Analysis' : `${CATEGORIES.find(c => c.key === activeCategory)?.label} · US Analysis`}
+                    </p>
                   </div>
                 </div>
                 <button onClick={() => fetchTrends(true)} className="p-4 hover:bg-slate-50 rounded-2xl text-slate-400 transition-all border border-slate-50 hover:border-slate-100">
@@ -168,14 +220,19 @@ export default function Dashboard() {
                   Array(4).fill(0).map((_, i) => (
                     <div key={i} className="h-24 w-full animate-shimmer bg-slate-50 rounded-3xl" />
                   ))
+                ) : trends.length === 0 ? (
+                  <div className="py-20 flex flex-col items-center text-center gap-4">
+                    <div className="w-16 h-16 rounded-[2rem] bg-slate-50 flex items-center justify-center text-slate-300">
+                      <TrendingUp size={32} />
+                    </div>
+                    <p className="text-lg font-black text-slate-400">No trends found for this category</p>
+                    <p className="text-sm text-slate-400">Try a different category or time range.</p>
+                  </div>
                 ) : (
                   trends.map((topic, i) => (
                     <div key={i} className="flex items-center justify-between p-8 rounded-[2rem] hover:bg-slate-50 transition-all group border-2 border-transparent hover:border-indigo-50/50 cursor-pointer relative overflow-hidden">
                       <div className="flex items-center gap-8 relative z-10">
-                        <div className={`w-16 h-16 rounded-3xl flex items-center justify-center font-black text-xl shadow-sm border-2 ${
-                          topic.source === 'Reddit' ? 'bg-orange-50 text-orange-600 border-orange-100' :
-                          topic.source === 'Google' ? 'bg-blue-50 text-blue-600 border-blue-100' : 'bg-red-50 text-red-600 border-red-100'
-                        }`}>
+                        <div className={`w-16 h-16 rounded-3xl flex items-center justify-center font-black text-xl shadow-sm border-2 ${getSourceColor(topic.source)}`}>
                           {topic.source[0]}
                         </div>
                         <div>
@@ -183,6 +240,14 @@ export default function Dashboard() {
                           <div className="flex items-center gap-3">
                              <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{topic.source} Intelligence</span>
                              <div className="w-1 h-1 rounded-full bg-slate-200" />
+                             {topic.category && (
+                               <>
+                                 <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md border ${getCategoryColor(topic.category)}`}>
+                                   {topic.category === 'viral-facts' ? '🤯 Facts' : topic.category}
+                                 </span>
+                                 <div className="w-1 h-1 rounded-full bg-slate-200" />
+                               </>
+                             )}
                              <div className="flex items-center gap-1.5">
                                 <Zap size={12} className="text-amber-400 fill-amber-400" />
                                 <span className="text-[10px] font-black text-indigo-600 uppercase tracking-widest">{topic.hotness}% Velocity</span>

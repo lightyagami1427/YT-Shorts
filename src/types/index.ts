@@ -29,8 +29,11 @@ export interface VideoPackage {
   createdAt?: string;
 }
 
+export type TrendCategory = 'technology' | 'music' | 'entertainment' | 'viral-facts' | 'gaming' | 'science';
+
 export interface TrendingTopic {
   title: string;
   source: string;
   hotness?: number;
+  category?: TrendCategory;
 }

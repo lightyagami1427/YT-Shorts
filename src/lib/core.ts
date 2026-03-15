@@ -118,11 +118,29 @@ export async function searchStockVideos(keywords: any): Promise<VideoAsset[]> {
 
   let aggregatedAssets: VideoAsset[] = [];
   
-  // Sequential Atomic Search (Top 3 Keywords)
-  for (const kw of keywordArray.slice(0, 3)) {
-    console.log(`⚛️ Individual search: "${kw}"`);
-    const results = await fetchFromAPIs(kw, 5);
-    aggregatedAssets = [...aggregatedAssets, ...results];
+  // Strategy 1: Combined contextual search using first keyword (most specific context)
+  if (keywordArray.length > 0) {
+    const primaryQuery = keywordArray[0]; // The AI's primary contextual phrase
+    console.log(`🎯 Primary contextual search: "${primaryQuery}"`);
+    const primaryResults = await fetchFromAPIs(primaryQuery, 8);
+    aggregatedAssets = [...aggregatedAssets, ...primaryResults];
+  }
+
+  // Strategy 2: Combined search using first two phrases together for even better context
+  if (keywordArray.length >= 2) {
+    const combinedQuery = `${keywordArray[0]} ${keywordArray[1]}`.substring(0, 80);
+    console.log(`🔗 Combined context search: "${combinedQuery}"`);
+    const combinedResults = await fetchFromAPIs(combinedQuery, 5);
+    aggregatedAssets = [...aggregatedAssets, ...combinedResults];
+  }
+
+  // Strategy 3: Individual supporting phrase searches (if we still need more)
+  if (aggregatedAssets.length < 6) {
+    for (const kw of keywordArray.slice(1, 3)) {
+      console.log(`⚛️ Supporting search: "${kw}"`);
+      const results = await fetchFromAPIs(kw, 5);
+      aggregatedAssets = [...aggregatedAssets, ...results];
+    }
   }
 
   // Deduplicate and final filter

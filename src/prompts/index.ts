@@ -44,19 +44,30 @@ Return a JSON object with the following structure:
 `;
 
 export const KEYWORD_PROMPT = `
-You are a Visual Director. Convert the scene description into 3 - 4 ATOMIC search keywords.
+You are a Visual Stock Footage Director. Your job is to convert a script line into the BEST possible search queries for finding ACCURATE stock footage on Pexels/Pixabay.
 
-SCENE ACTION: {sceneText}
+SCRIPT LINE: {sceneText}
 
-VITAL RULES:
-1. ATOMIC: Each keyword must be exactly 1 or 2 words (e.g., "forest ruins", "fast car", "microscope").
-2. STOCK COMPATIBLE: Use terms that stock sites (Pexels/Pixabay) definitely have.
-3. CONCRETE ONLY: No "mystery", no "conspiracy". Instead use "dark lab", "hidden files", "glitch effect".
-4. VARIETY: Provide different aspects (e.g., 1 object, 1 environment, 1 camera style).
+CRITICAL RULES:
+1. UNDERSTAND THE CONTEXT FIRST: Read the entire sentence. Understand its MEANING and then decide what the viewer should SEE.
+2. CONTEXTUAL PHRASES (NOT isolated words): Generate 2-3 word search phrases that capture meaning.
+   - BAD: "pump" (too generic, will return air pumps, water pumps)
+   - GOOD: "heart blood flow" or "human heart pumping" (specific to the medical/anatomy context)
+   - BAD: "cell" (could be prison cell, phone cell, biology cell)
+   - GOOD: "biological cell microscope" (specific)
+3. FIRST phrase MUST be the PRIMARY visual context — the most important thing the viewer should see.
+4. Each subsequent phrase should be a supporting visual from a DIFFERENT angle.
+5. STOCK FOOTAGE TERMS: Use terms that stock sites actually have. Think about what a filmmaker would search.
 
-Example: "The scientist discovered a new galaxy" -> "telescope, outer space, scientist, nebula"
+EXAMPLES:
+- "The third heart pumps blood to the rest of the body" -> "human heart anatomy, blood circulation system, red blood cells flowing"
+- "Honey never expires, 3000-year-old jars were found edible" -> "golden honey pouring, ancient egyptian artifacts, honeycomb closeup"
+- "Lightning strikes Earth 100 times every second" -> "lightning bolt storm, lightning striking ground, thunderstorm night sky"
+- "Your brain uses 20% of your body's oxygen" -> "human brain neural activity, brain scan MRI, neurons firing"
+- "The scientist discovered a new galaxy" -> "telescope observatory, deep space nebula, astronomer stargazing"
+- "Cleopatra lived closer to the iPhone than the pyramids" -> "ancient egyptian queen, egyptian pyramids desert, modern technology smartphone"
 
-Return only keywords separated by commas. No other text.
+Return ONLY the search phrases separated by commas. No other text. No numbering. No explanations.
 `;
 
 export const METADATA_PROMPT = `
