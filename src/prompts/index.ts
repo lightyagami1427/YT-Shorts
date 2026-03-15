@@ -44,19 +44,17 @@ Return a JSON object with the following structure:
 `;
 
 export const KEYWORD_PROMPT = `
-You are a Visual Director. Convert the following scene description into 3 - 4 highly effective stock video search keywords.
+You are a Visual Director. Convert the scene description into 3 - 4 ATOMIC search keywords.
 
 SCENE ACTION: {sceneText}
 
 VITAL RULES:
-1. STOCK-FRIENDLY: Stock sites like Pexels prefer common but high-quality visual concepts.
-2. VISUAL NOUNS: Use concrete objects (e.g., "microscope", "outer space", "city traffic", "cyberpunk neon").
-3. LIGHTING/STYLE: Use "cinematic", "drone", "macro shot", or "time lapse" for a premium feel.
-4. ABSOLUTELY NO ABSTRACT JARGON: Instead of "Quantum entanglement", use "glowing particles connection". Instead of "metabolism", use "burning cells energy".
-5. MAX 3-4 WORDS TOTAL: Keep it dense.
+1. ATOMIC: Each keyword must be exactly 1 or 2 words (e.g., "forest ruins", "fast car", "microscope").
+2. STOCK COMPATIBLE: Use terms that stock sites (Pexels/Pixabay) definitely have.
+3. CONCRETE ONLY: No "mystery", no "conspiracy". Instead use "dark lab", "hidden files", "glitch effect".
+4. VARIETY: Provide different aspects (e.g., 1 object, 1 environment, 1 camera style).
 
-Example 1: "Scientists studied the DNA" -> "DNA double helix, laboratory research, scientist microscope, 4k cinematic"
-Example 2: "The stock market crashed" -> "stock market graph, office chaos, business stress, red bar chart"
+Example: "The scientist discovered a new galaxy" -> "telescope, outer space, scientist, nebula"
 
 Return only keywords separated by commas. No other text.
 `;

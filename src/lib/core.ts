@@ -62,19 +62,16 @@ export async function searchStockVideos(keywords: any): Promise<VideoAsset[]> {
     return [];
   }
 
-  const strictQuery = keywordArray.join(' ');
-  const broadQuery = keywordArray.slice(0, 2).join(' '); // Try first two keywords if strict fails
-
-  console.log(`📡 Searching for: "${strictQuery}" (Broad: "${broadQuery}")`);
+  console.log(`📡 Atomic Search Strategy for: ${keywordArray.join(', ')}`);
 
   async function fetchFromAPIs(query: string, limit: number): Promise<VideoAsset[]> {
     const assets: VideoAsset[] = [];
     const PEXELS_API_KEY = process.env.PEXELS_API_KEY;
     const PIXABAY_API_KEY = process.env.PIXABAY_API_KEY;
 
-    // Pexels (Randomized Page)
+    // Pexels (Randomized)
     try {
-      const page = Math.floor(Math.random() * 5) + 1;
+      const page = Math.floor(Math.random() * 3) + 1;
       const pexelsRes = await fetch(`https://api.pexels.com/videos/search?query=${encodeURIComponent(query)}&per_page=${limit}&page=${page}`, {
         headers: { "Authorization": PEXELS_API_KEY || '' }
       });
@@ -95,16 +92,12 @@ export async function searchStockVideos(keywords: any): Promise<VideoAsset[]> {
       }
     } catch (e) { console.error("❌ Pexels error:", e); }
 
-    console.log(`✅ Pexels found ${assets.length} assets.`);
-
-    // Pixabay (Randomized Page)
-    if (assets.length < limit) {
+    // Pixabay
+    if (assets.length < 5) { // If Pexels was sparse
       try {
-        const page = Math.floor(Math.random() * 2) + 1;
-        const pixabayRes = await fetch(`https://pixabay.com/api/videos/?key=${PIXABAY_API_KEY}&q=${encodeURIComponent(query)}&per_page=${limit}&page=${page}`);
+        const pixabayRes = await fetch(`https://pixabay.com/api/videos/?key=${PIXABAY_API_KEY}&q=${encodeURIComponent(query)}&per_page=${limit}`);
         const pixabayData = await pixabayRes.json();
         if (pixabayData.hits) {
-          const startCount = assets.length;
           pixabayData.hits.forEach((v: any) => {
             assets.push({
               id: `pixabay-${v.id}`,
@@ -117,33 +110,27 @@ export async function searchStockVideos(keywords: any): Promise<VideoAsset[]> {
               downloadUrl: v.videos.medium.url
             });
           });
-          console.log(`✅ Pixabay added ${assets.length - startCount} assets.`);
         }
       } catch (e) { console.error("❌ Pixabay error:", e); }
     }
     return assets;
   }
 
-  let finalAssets = await fetchFromAPIs(strictQuery, 10); // Increase limit
+  let aggregatedAssets: VideoAsset[] = [];
   
-  // Fallback 1: Broad Query (First two words)
-  if (finalAssets.length < 3 && broadQuery !== strictQuery) {
-    console.log("🔄 Trying broad fallback query...");
-    const additional = await fetchFromAPIs(broadQuery, 10);
-    finalAssets = [...finalAssets, ...additional].filter((v, i, a) => a.findIndex(t => t.id === v.id) === i);
+  // Sequential Atomic Search (Top 3 Keywords)
+  for (const kw of keywordArray.slice(0, 3)) {
+    console.log(`⚛️ Individual search: "${kw}"`);
+    const results = await fetchFromAPIs(kw, 5);
+    aggregatedAssets = [...aggregatedAssets, ...results];
   }
 
-  // Fallback 2: Atomic Search (Single most relevant keyword)
-  if (finalAssets.length < 2 && keywordArray.length > 0) {
-    const atomicQuery = keywordArray[0];
-    console.log(`⚛️ Trying atomic fallback query: "${atomicQuery}"`);
-    const additional = await fetchFromAPIs(atomicQuery, 5);
-    finalAssets = [...finalAssets, ...additional].filter((v, i, a) => a.findIndex(t => t.id === v.id) === i);
-  }
-
-  const filtered = finalAssets.filter(a => a.duration >= 3 && a.duration <= 25);
-  console.log(`🎯 Final filtered assets: ${filtered.length}`);
-  return filtered;
+  // Deduplicate and final filter
+  const uniqueAssets = aggregatedAssets.filter((v, i, a) => a.findIndex(t => t.id === v.id) === i);
+  const filtered = uniqueAssets.filter(a => a.duration >= 3 && a.duration <= 30);
+  
+  console.log(`🎯 Total Optimized Assets found: ${filtered.length}`);
+  return filtered.slice(0, 15);
 }
 
 export function rankAssets(assets: VideoAsset[], keywords: string[]): VideoAsset[] {
