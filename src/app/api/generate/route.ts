@@ -16,14 +16,19 @@ export async function POST(req: Request) {
     const { type, topic, hook, sceneText } = body;
     
     const host = req.headers.get('host');
-    console.log(`[Generate API] Request type: ${type}, Topic: ${topic || 'N/A'}, Host: ${host}`);
+    const keyUsed = process.env.OPENROUTER_API_KEY || '';
+    const keyPrefix = keyUsed.substring(0, 15);
+    const isOldKey = keyUsed.includes('32c1e359dc');
 
-    if (!process.env.OPENROUTER_API_KEY || process.env.OPENROUTER_API_KEY === 'your_openrouter_key_here') {
+    console.log(`[Generate API] Request type: ${type}, Topic: ${topic || 'N/A'}, Host: ${host}`);
+    console.log(`[Generate API] Key Diagnostic: Prefix=${keyPrefix}..., IsLeakedKey=${isOldKey}`);
+
+    if (!keyUsed || keyUsed === 'your_openrouter_key_here') {
       console.error("[Generate API] CRITICAL: OPENROUTER_API_KEY is missing or invalid in Vercel Environment Variables");
       return NextResponse.json({ 
         error: "Configuration Error", 
         message: "OPENROUTER_API_KEY is not set in Vercel. Please add it to Project Settings > Environment Variables.",
-        diagnostics: { host, envPresent: !!process.env.OPENROUTER_API_KEY }
+        diagnostics: { host, envPresent: !!keyUsed }
       }, { status: 500 });
     }
 
