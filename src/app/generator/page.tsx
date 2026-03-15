@@ -67,10 +67,10 @@ ${pkg.script.map((s, i) => `Scene ${i+1}: ${s.assets?.[0]?.url || 'N/A'}`).join(
   return (
     <div className="app-container bg-[#fcfdfe] min-h-screen text-slate-900">
       <Sidebar />
-      <main className="main-content flex-1 flex flex-col max-w-[1400px] mx-auto px-12 py-16">
+      <main className="main-content flex-1 flex flex-col max-w-6xl mx-auto px-8 py-10">
         
         {/* Extraordinary Stepper */}
-        <div className="mb-20">
+        <div className="mb-12">
           <div className="flex items-center justify-between max-w-4xl mx-auto px-4 relative">
             <div className="absolute top-[1.375rem] left-8 right-8 h-[2px] bg-slate-100 -z-10" />
             <div 
@@ -80,12 +80,12 @@ ${pkg.script.map((s, i) => `Scene ${i+1}: ${s.assets?.[0]?.url || 'N/A'}`).join(
             
             {[1, 2, 3].map((s) => (
               <div key={s} className="flex flex-col items-center gap-4 bg-[#fcfdfe] px-6">
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-black transition-all duration-500 border-2 ${
+                <div className={`w-10 h-10 rounded-2xl flex items-center justify-center font-black transition-all duration-500 border-2 ${
                   step >= s 
                     ? 'bg-indigo-600 border-indigo-600 text-white shadow-xl shadow-indigo-100 scale-110' 
                     : 'bg-white border-slate-200 text-slate-300'
                 }`}>
-                  {step > s ? <Check size={22} strokeWidth={3} /> : s}
+                  {step > s ? <Check size={18} strokeWidth={3} /> : s}
                 </div>
                 <div className="flex flex-col items-center gap-0.5">
                   <span className={`text-[11px] font-black uppercase tracking-widest transition-colors ${step >= s ? 'text-indigo-600' : 'text-slate-400'}`}>
@@ -101,7 +101,7 @@ ${pkg.script.map((s, i) => `Scene ${i+1}: ${s.assets?.[0]?.url || 'N/A'}`).join(
         </div>
 
         {/* Global Header Section */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-16 border-b border-slate-100 pb-12">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-10 border-b border-slate-100 pb-8">
           <div>
              <div className="flex items-center gap-3 mb-3">
               <span className="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-indigo-100 shadow-sm">
@@ -112,10 +112,10 @@ ${pkg.script.map((s, i) => `Scene ${i+1}: ${s.assets?.[0]?.url || 'N/A'}`).join(
                 <span className="text-[10px] font-bold uppercase tracking-tighter">AI Enhanced</span>
               </div>
             </div>
-            <h2 className="text-5xl font-black text-[#0f172a] tracking-tightest leading-none mb-4">
+            <h2 className="text-4xl font-black text-[#0f172a] tracking-tightest leading-none mb-4">
               {step === 1 ? 'High-Performance Hooks' : step === 2 ? 'Production Studio' : 'Global Distribution'}
             </h2>
-            <p className="text-slate-500 font-medium text-lg max-w-2xl">
+            <p className="text-slate-500 font-medium text-base max-w-2xl">
               {step === 1 ? (
                 <>Select a hook that <span className="text-indigo-600 font-bold underline decoration-indigo-200 underline-offset-4 decoration-4">forces stop-scrolling</span> behavior.</>
               ) : step === 2 ? (
@@ -157,7 +157,7 @@ ${pkg.script.map((s, i) => `Scene ${i+1}: ${s.assets?.[0]?.url || 'N/A'}`).join(
                   <div 
                     key={i}
                     onClick={() => handleHookPick(hook)}
-                    className={`glass-card p-10 cursor-pointer relative group flex flex-col justify-between border-2 ${
+                    className={`glass-card p-8 cursor-pointer relative group flex flex-col justify-between border-2 ${
                       selectedHook === hook ? 'border-indigo-600 ring-4 ring-indigo-50/50 bg-white' : 'border-transparent'
                     } ${internalLoading && selectedHook === hook ? 'opacity-80 pointer-events-none' : ''}`}
                   >
@@ -173,7 +173,7 @@ ${pkg.script.map((s, i) => `Scene ${i+1}: ${s.assets?.[0]?.url || 'N/A'}`).join(
                          </div>
                       </div>
                     </div>
-                    <p className="text-2xl font-black text-slate-800 leading-[1.3] group-hover:text-indigo-600 transition-colors">
+                    <p className="text-xl lg:text-2xl font-black text-slate-800 leading-[1.3] group-hover:text-indigo-600 transition-colors">
                       {hook}
                     </p>
                     
@@ -191,7 +191,7 @@ ${pkg.script.map((s, i) => `Scene ${i+1}: ${s.assets?.[0]?.url || 'N/A'}`).join(
                   </div>
                 ))
               ) : (
-                <div className="col-span-2 py-40 glass-card bg-white flex flex-col items-center justify-center text-slate-300 border-dashed border-2 border-slate-100">
+                <div className="col-span-2 py-24 glass-card bg-white flex flex-col items-center justify-center text-slate-300 border-dashed border-2 border-slate-100">
                   {isGenerating ? (
                     <div className="flex flex-col items-center gap-6">
                       <div className="relative">
@@ -205,19 +205,19 @@ ${pkg.script.map((s, i) => `Scene ${i+1}: ${s.assets?.[0]?.url || 'N/A'}`).join(
                     </div>
                   ) : (
                     <div className="flex flex-col items-center gap-8 w-full max-w-xl px-12">
-                      <div className="w-20 h-20 rounded-[2.5rem] bg-indigo-50 flex items-center justify-center text-indigo-600 mb-4">
-                        <Wand2 size={40} strokeWidth={2.5} />
+                      <div className="w-16 h-16 rounded-[2rem] bg-indigo-50 flex items-center justify-center text-indigo-600 mb-4">
+                        <Wand2 size={32} strokeWidth={2.5} />
                       </div>
                       <div className="text-center">
-                        <h3 className="text-2xl font-black text-slate-900 mb-2">Initialize Production</h3>
+                        <h3 className="text-xl font-black text-slate-900 mb-2">Initialize Production</h3>
                         <p className="text-sm font-medium text-slate-400">Enter a topic to generate masterclass hooks</p>
                       </div>
                       <div className="w-full relative group">
-                        <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-600 transition-colors" size={20} />
+                        <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-600 transition-colors" size={18} />
                         <input 
                           type="text" 
                           placeholder="e.g. Psychology of Wealth or AI Robots"
-                          className="w-full pl-16 pr-6 py-5 bg-slate-50 border-2 border-transparent rounded-[2rem] text-lg font-black focus:outline-none focus:bg-white focus:border-indigo-100 focus:ring-8 focus:ring-indigo-50/50 transition-all placeholder:text-slate-200"
+                          className="w-full pl-14 pr-6 py-4 bg-slate-50 border-2 border-transparent rounded-3xl text-base font-black focus:outline-none focus:bg-white focus:border-indigo-100 focus:ring-8 focus:ring-indigo-50/50 transition-all placeholder:text-slate-200"
                           onKeyDown={(e) => {
                             if (e.key === 'Enter') {
                               const val = (e.target as HTMLInputElement).value;
@@ -246,18 +246,18 @@ ${pkg.script.map((s, i) => `Scene ${i+1}: ${s.assets?.[0]?.url || 'N/A'}`).join(
           <section className="animate-in fade-in slide-in-from-bottom-8 duration-700">
             <div className="grid grid-cols-1 xl:grid-cols-12 gap-10">
               <div className="xl:col-span-4 space-y-8">
-                <div className="glass-card bg-indigo-600 p-10 text-white relative overflow-hidden">
+                <div className="glass-card bg-indigo-600 p-8 text-white relative overflow-hidden">
                   <div className="absolute top-0 right-0 p-4 opacity-10">
-                    <Zap size={120} fill="currentColor" />
+                    <Zap size={80} fill="currentColor" />
                   </div>
                   <span className="text-[10px] font-black uppercase tracking-[0.2em] opacity-60 block mb-4">Master Hook</span>
-                  <p className="text-2xl font-black leading-tight relative z-10 italic">"{pkg.hook}"</p>
+                  <p className="text-xl lg:text-2xl font-black leading-tight relative z-10 italic">"{pkg.hook}"</p>
                 </div>
                 
-                <div className="glass-card bg-white p-8 border border-slate-100 divide-y divide-slate-50">
+                <div className="glass-card bg-white p-6 border border-slate-100 divide-y divide-slate-50">
                   <div className="pb-6">
                      <h5 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Current Topic</h5>
-                     <p className="text-lg font-black text-slate-900 leading-tight">#{pkg.topic}</p>
+                     <p className="text-base font-black text-slate-900 leading-tight">#{pkg.topic}</p>
                   </div>
                    <div className="py-6">
                      <h5 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
@@ -288,20 +288,20 @@ ${pkg.script.map((s, i) => `Scene ${i+1}: ${s.assets?.[0]?.url || 'N/A'}`).join(
         {/* Step 3: Extraordinary Export View */}
         {step === 3 && pkg && (
           <section className="max-w-6xl mx-auto space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-700 pb-20">
-            <div className="glass-card bg-[#0f172a] p-16 text-center text-white relative overflow-hidden rounded-3xl group">
+            <div className="glass-card bg-[#0f172a] p-10 text-center text-white relative overflow-hidden rounded-3xl group">
                <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/40 via-transparent to-transparent group-hover:opacity-60 transition-opacity" />
                <div className="relative z-10 space-y-6">
                   <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md px-6 py-2 rounded-full border border-white/10 mb-2">
                     <Check className="text-emerald-400" size={18} strokeWidth={4} />
                     <span className="text-[11px] font-black uppercase tracking-widest">Production Complete</span>
                   </div>
-                  <h2 className="text-6xl font-black tracking-tightest leading-none">Your Video Package<br/>Is Ready for Launch</h2>
-                  <p className="text-xl font-medium text-slate-400 max-w-2xl mx-auto leading-relaxed">Everything below is cross-referenced with US trending algorithms. High SEO resonance guaranteed.</p>
+                  <h2 className="text-4xl lg:text-5xl font-black tracking-tightest leading-none">Your Video Package<br/>Is Ready for Launch</h2>
+                  <p className="text-lg font-medium text-slate-400 max-w-2xl mx-auto leading-relaxed">Everything below is cross-referenced with US trending algorithms. High SEO resonance guaranteed.</p>
                </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-              <div className="glass-card bg-white p-12 border border-slate-200">
+              <div className="glass-card bg-white p-8 border border-slate-200">
                 <div className="flex justify-between items-center mb-10">
                   <h4 className="text-[12px] uppercase tracking-[0.3em] text-indigo-600 font-extrabold flex items-center gap-3">
                     <Monitor size={20} className="text-slate-900" />
@@ -320,17 +320,17 @@ ${pkg.script.map((s, i) => `Scene ${i+1}: ${s.assets?.[0]?.url || 'N/A'}`).join(
               </div>
 
               <div className="flex flex-col gap-10">
-                <div className="glass-card bg-white p-12 border border-slate-200">
+                <div className="glass-card bg-white p-8 border border-slate-200">
                   <h4 className="text-[12px] uppercase tracking-[0.3em] text-indigo-600 font-extrabold mb-8">Description Algorithm</h4>
-                  <div className="bg-slate-50 p-8 rounded-[1.5rem] border border-slate-100 relative group">
-                    <p className="text-slate-800 font-bold leading-[1.8] text-lg italic">"{pkg.description}"</p>
+                  <div className="bg-slate-50 p-6 rounded-[1.5rem] border border-slate-100 relative group">
+                    <p className="text-slate-800 font-bold leading-[1.8] text-base italic">"{pkg.description}"</p>
                     <div className="absolute top-4 right-4 opacity-10 group-hover:opacity-100 transition-opacity">
                       <Copy size={24} className="text-indigo-600" />
                     </div>
                   </div>
                 </div>
 
-                <div className="glass-card bg-white p-12 border border-slate-200">
+                <div className="glass-card bg-white p-8 border border-slate-200">
                   <h4 className="text-[12px] uppercase tracking-[0.3em] text-indigo-600 font-extrabold mb-8">Hashtag Cloud</h4>
                   <div className="flex flex-wrap gap-3">
                     {pkg.hashtags.map((tag, i) => (
@@ -346,10 +346,10 @@ ${pkg.script.map((s, i) => `Scene ${i+1}: ${s.assets?.[0]?.url || 'N/A'}`).join(
             <div className="flex justify-center pt-12">
               <button 
                 onClick={handleCopyEverything}
-                className="gradient-btn px-20 py-8 rounded-[2rem] font-black text-3xl flex items-center gap-8 shadow-2xl shadow-indigo-300 transition-all active:scale-[0.98] group"
+                className="gradient-btn px-10 py-5 rounded-[1.5rem] font-black text-xl flex items-center gap-8 shadow-2xl shadow-indigo-300 transition-all active:scale-[0.98] group"
               >
                 <div className="bg-white/20 p-4 rounded-2xl group-hover:rotate-12 transition-transform">
-                  {copied ? <Check size={32} strokeWidth={4} /> : <Copy size={32} strokeWidth={3} />}
+                  {copied ? <Check size={24} strokeWidth={4} /> : <Copy size={24} strokeWidth={3} />}
                 </div>
                 {copied ? 'All Data Copied!' : 'Copy Full Studio Package'}
               </button>

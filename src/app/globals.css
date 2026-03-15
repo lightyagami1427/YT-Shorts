@@ -38,7 +38,7 @@ body {
 }
 
 .sidebar {
-  width: 280px;
+  width: 240px;
   position: fixed;
   height: 100vh;
   background: #ffffff;
@@ -47,8 +47,8 @@ body {
 
 .main-content {
   flex: 1;
-  margin-left: 280px;
-  padding: 48px;
+  margin-left: 240px;
+  padding: 32px;
   background: #f8f9fc;
 }
 
@@ -117,13 +117,13 @@ h1, h2, h3, h4 {
 .sidebar-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 18px;
-  margin: 4px 12px;
-  border-radius: 14px;
+  gap: 10px;
+  padding: 10px 14px;
+  margin: 4px 8px;
+  border-radius: 12px;
   color: #64748b;
   font-weight: 600;
-  font-size: 0.925rem;
+  font-size: 0.875rem;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;

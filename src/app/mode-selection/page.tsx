@@ -33,7 +33,7 @@ export default function ModeSelection() {
             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.4)]" />
             YT Shorts Studio
           </div>
-          <h1 className="text-5xl md:text-6xl font-black text-[#0f172a] tracking-tighter leading-[1.1] mb-5">
+          <h1 className="text-4xl md:text-5xl font-black text-[#0f172a] tracking-tighter leading-[1.1] mb-5">
             What&apos;s your
             <span className="block bg-gradient-to-r from-indigo-600 via-violet-500 to-purple-600 bg-clip-text text-transparent">workflow?</span>
           </h1>
@@ -50,22 +50,22 @@ export default function ModeSelection() {
             onClick={() => handleSelect('scratch')}
             onMouseEnter={() => setHoveredMode('scratch')}
             onMouseLeave={() => setHoveredMode(null)}
-            className="group relative bg-white rounded-[2rem] p-10 text-left transition-all duration-500 overflow-hidden border-2 border-slate-100 hover:border-indigo-200 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgb(99,102,241,0.12)] hover:-translate-y-1"
+            className="group relative bg-white rounded-[2rem] p-8 text-left transition-all duration-500 overflow-hidden border-2 border-slate-100 hover:border-indigo-200 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgb(99,102,241,0.12)] hover:-translate-y-1"
           >
             {/* Hover glow */}
             <div className={`absolute inset-0 bg-gradient-to-br from-indigo-50/80 to-violet-50/50 transition-opacity duration-500 ${hoveredMode === 'scratch' ? 'opacity-100' : 'opacity-0'}`} />
             <div className={`absolute -right-10 -bottom-10 transition-all duration-700 ${hoveredMode === 'scratch' ? 'opacity-[0.06] rotate-12 scale-110' : 'opacity-[0.03] rotate-0 scale-100'}`}>
-              <Wand2 size={180} strokeWidth={1} className="text-indigo-600" />
+              <Wand2 size={120} strokeWidth={1} className="text-indigo-600" />
             </div>
             
             <div className="relative z-10">
               {/* Icon */}
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center mb-8 shadow-lg shadow-indigo-200/50 group-hover:shadow-indigo-300/60 group-hover:scale-105 transition-all">
-                <Sparkles size={24} className="text-white" />
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center mb-6 shadow-lg shadow-indigo-200/50 group-hover:shadow-indigo-300/60 group-hover:scale-105 transition-all">
+                <Sparkles size={20} className="text-white" />
               </div>
               
               {/* Title */}
-              <h2 className="text-2xl font-black text-[#0f172a] mb-3 tracking-tight group-hover:text-indigo-600 transition-colors">
+              <h2 className="text-xl font-black text-[#0f172a] mb-3 tracking-tight group-hover:text-indigo-600 transition-colors">
                 Generate from Scratch
               </h2>
               <p className="text-slate-500 font-medium text-[15px] leading-relaxed mb-8">
@@ -98,22 +98,22 @@ export default function ModeSelection() {
             onClick={() => handleSelect('custom-script')}
             onMouseEnter={() => setHoveredMode('custom-script')}
             onMouseLeave={() => setHoveredMode(null)}
-            className="group relative bg-white rounded-[2rem] p-10 text-left transition-all duration-500 overflow-hidden border-2 border-slate-100 hover:border-violet-200 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgb(139,92,246,0.12)] hover:-translate-y-1"
+            className="group relative bg-white rounded-[2rem] p-8 text-left transition-all duration-500 overflow-hidden border-2 border-slate-100 hover:border-violet-200 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgb(139,92,246,0.12)] hover:-translate-y-1"
           >
             {/* Hover glow */}
             <div className={`absolute inset-0 bg-gradient-to-br from-violet-50/80 to-rose-50/50 transition-opacity duration-500 ${hoveredMode === 'custom-script' ? 'opacity-100' : 'opacity-0'}`} />
             <div className={`absolute -right-10 -bottom-10 transition-all duration-700 ${hoveredMode === 'custom-script' ? 'opacity-[0.06] rotate-12 scale-110' : 'opacity-[0.03] rotate-0 scale-100'}`}>
-              <FileText size={180} strokeWidth={1} className="text-violet-600" />
+              <FileText size={120} strokeWidth={1} className="text-violet-600" />
             </div>
             
             <div className="relative z-10">
               {/* Icon */}
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-rose-500 flex items-center justify-center mb-8 shadow-lg shadow-violet-200/50 group-hover:shadow-violet-300/60 group-hover:scale-105 transition-all">
-                <FileText size={24} className="text-white" />
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-rose-500 flex items-center justify-center mb-6 shadow-lg shadow-violet-200/50 group-hover:shadow-violet-300/60 group-hover:scale-105 transition-all">
+                <FileText size={20} className="text-white" />
               </div>
               
               {/* Title */}
-              <h2 className="text-2xl font-black text-[#0f172a] mb-3 tracking-tight group-hover:text-violet-600 transition-colors">
+              <h2 className="text-xl font-black text-[#0f172a] mb-3 tracking-tight group-hover:text-violet-600 transition-colors">
                 I Have My Script
               </h2>
               <p className="text-slate-500 font-medium text-[15px] leading-relaxed mb-8">

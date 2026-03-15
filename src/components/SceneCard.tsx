@@ -17,10 +17,10 @@ const SceneCard: React.FC<SceneCardProps> = ({ scene, index, onRefreshAssets, is
 
   return (
     <div className="glass-card bg-white overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-all">
-      <div className="p-6 border-b border-slate-100 flex justify-between items-start bg-white">
+      <div className="p-5 border-b border-slate-100 flex justify-between items-start bg-white">
         <div>
           <span className="text-[10px] font-black text-indigo-600 uppercase tracking-widest mb-1 block">Scene 0{index + 1}</span>
-          <h4 className="text-xl font-black text-slate-900 leading-tight">
+          <h4 className="text-lg font-black text-slate-900 leading-tight">
             {scene.end - scene.start}s <span className="text-slate-400 font-medium text-sm">Sequence</span>
           </h4>
         </div>
@@ -33,14 +33,14 @@ const SceneCard: React.FC<SceneCardProps> = ({ scene, index, onRefreshAssets, is
         </button>
       </div>
       
-      <div className="p-6 bg-slate-50/50 border-b border-slate-50">
+      <div className="p-5 bg-slate-50/50 border-b border-slate-50">
         <p className="text-slate-700 font-medium leading-relaxed italic border-l-4 border-indigo-200 pl-4 text-sm">
           "{scene.text}"
         </p>
       </div>
 
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-6">
+      <div className="p-5">
+        <div className="flex justify-between items-center mb-5">
           <h5 className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
             <Monitor size={14} className="text-indigo-600" />
             Stock Asset Matches
@@ -60,7 +60,7 @@ const SceneCard: React.FC<SceneCardProps> = ({ scene, index, onRefreshAssets, is
         </div>
         
         {/* Assets Grid */}
-        <div className="p-5 bg-slate-50/50">
+        <div className="p-4 bg-slate-50/50">
           <div className="grid grid-cols-3 gap-3">
             {isLoading ? (
               Array(3).fill(0).map((_, i) => (
