@@ -14,6 +14,7 @@ export function useGenerator() {
     setIsGenerating(true);
     const res = await fetch('/api/generate', {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type: 'hooks', topic: topicTitle })
     });
     const data = await res.json();
@@ -27,6 +28,7 @@ export function useGenerator() {
     // 1. Generate Script
     const scriptRes = await fetch('/api/generate', {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type: 'script', topic: topic.title, hook })
     });
     const scriptData = await scriptRes.json();
@@ -34,6 +36,7 @@ export function useGenerator() {
     // 2. Generate Metadata
     const metaRes = await fetch('/api/generate', {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type: 'metadata', topic: topic.title })
     });
     const metaData = await metaRes.json();
@@ -62,6 +65,7 @@ export function useGenerator() {
     // a. Extract keywords
     const kwRes = await fetch('/api/generate', {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type: 'keywords', sceneText })
     });
     const keywords = await kwRes.json();
@@ -69,6 +73,7 @@ export function useGenerator() {
     // b. Fetch assets
     const assetRes = await fetch('/api/assets', {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ keywords })
     });
     const assets = await assetRes.json();

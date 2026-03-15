@@ -4,7 +4,15 @@ import { HOOK_PROMPT, SCRIPT_PROMPT, KEYWORD_PROMPT, METADATA_PROMPT } from '@/p
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
+    let body;
+    try {
+      body = await req.json();
+    } catch (e) {
+      // Fallback: Try parsing from text if it's arriving as text/plain
+      const text = await req.text();
+      body = JSON.parse(text);
+    }
+    
     const { type, topic, hook, sceneText } = body;
     
     console.log(`[Generate API] Request type: ${type}, Topic: ${topic || 'N/A'}`);
