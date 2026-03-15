@@ -14,7 +14,7 @@ export async function generateAIResponse(prompt: string): Promise<string | null>
       headers: {
         "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://viral-facts-lab.vercel.app",
+        "HTTP-Referer": "https://github.com/lightyagami1427/YT-Shorts",
         "X-Title": "ViralFacts Lab"
       },
       body: JSON.stringify({
