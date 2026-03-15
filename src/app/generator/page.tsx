@@ -7,7 +7,9 @@ import { useGenerator } from '@/hooks/useGenerator';
 import { Check, Copy, Loader2, Sparkles, Wand2, Zap, RefreshCw, ChevronRight, Monitor, Download, ArrowLeft, Layers, Film, Search } from 'lucide-react';
 import SceneCard from '@/components/SceneCard';
 
-export default function GeneratorPage() {
+import { Suspense } from 'react';
+
+function GeneratorContent() {
   const searchParams = useSearchParams();
   const initialTopic = searchParams.get('topic') || '';
   
@@ -357,5 +359,21 @@ ${pkg.script.map((s, i) => `Scene ${i+1}: ${s.assets?.[0]?.url || 'N/A'}`).join(
 
       </main>
     </div>
+  );
+}
+
+export default function GeneratorPage() {
+  return (
+    <Suspense fallback={
+      <div className="app-container bg-[#fcfdfe] min-h-screen flex items-center justify-center">
+        <Sidebar />
+        <div className="flex flex-col items-center gap-6">
+          <Loader2 className="animate-spin text-indigo-600" size={64} strokeWidth={3} />
+          <p className="text-lg font-black text-slate-900 uppercase tracking-widest">Initializing Studio...</p>
+        </div>
+      </div>
+    }>
+      <GeneratorContent />
+    </Suspense>
   );
 }
