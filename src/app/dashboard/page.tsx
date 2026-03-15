@@ -11,15 +11,43 @@ export default function Dashboard() {
   const [trends, setTrends] = useState<TrendingTopic[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [timeFilter, setTimeFilter] = useState<'24h' | '7d' | '30d'>('7d');
 
-  useEffect(() => {
-    fetch('/api/trends')
+  const fetchTrends = (forceRefresh = false) => {
+    setLoading(true);
+    const url = `/api/trends?time=${timeFilter}${forceRefresh ? `&refresh=${Date.now()}` : ''}`;
+    fetch(url)
       .then(res => res.json())
       .then(data => {
         setTrends(data);
         setLoading(false);
       });
-  }, []);
+  };
+
+  useEffect(() => {
+    fetchTrends();
+  }, [timeFilter]);
+
+  const kpiData = {
+    '24h': {
+      throughput: '1,245', throughputTrend: 5.2, throughputPos: true,
+      retention: '342.1s', retentionTrend: 1.2, retentionPos: false,
+      velocity: '82.1%', velocityTrend: 8.4, velocityPos: true,
+    },
+    '7d': {
+      throughput: '12,450', throughputTrend: 15.8, throughputPos: true,
+      retention: '363.9s', retentionTrend: 34.0, retentionPos: false,
+      velocity: '86.5%', velocityTrend: 24.2, velocityPos: true,
+    },
+    '30d': {
+      throughput: '48,290', throughputTrend: 12.4, throughputPos: true,
+      retention: '391.2s', retentionTrend: 8.7, retentionPos: true,
+      velocity: '88.2%', velocityTrend: 14.1, velocityPos: true,
+    }
+  };
+  const currentKpi = kpiData[timeFilter];
+
+
 
   const handleSearch = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && searchQuery.trim()) {
@@ -84,9 +112,24 @@ export default function Dashboard() {
             </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2 bg-white border border-slate-100 p-2 rounded-2xl shadow-sm">
-                <button className="px-5 py-2.5 text-xs font-black text-slate-400 hover:text-indigo-600 transition-all rounded-xl">24h</button>
-                <button className="px-5 py-2.5 text-xs font-black bg-indigo-600 text-white shadow-lg shadow-indigo-100 rounded-xl">7d</button>
-                <button className="px-5 py-2.5 text-xs font-black text-slate-400 hover:text-indigo-600 transition-all rounded-xl">30d</button>
+                <button 
+                  onClick={() => setTimeFilter('24h')}
+                  className={`px-5 py-2.5 text-xs font-black transition-all rounded-xl ${timeFilter === '24h' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-100' : 'text-slate-400 hover:text-indigo-600'}`}
+                >
+                  24h
+                </button>
+                <button 
+                  onClick={() => setTimeFilter('7d')}
+                  className={`px-5 py-2.5 text-xs font-black transition-all rounded-xl ${timeFilter === '7d' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-100' : 'text-slate-400 hover:text-indigo-600'}`}
+                >
+                  7d
+                </button>
+                <button 
+                  onClick={() => setTimeFilter('30d')}
+                  className={`px-5 py-2.5 text-xs font-black transition-all rounded-xl ${timeFilter === '30d' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-100' : 'text-slate-400 hover:text-indigo-600'}`}
+                >
+                  30d
+                </button>
               </div>
               <button className="p-4 bg-white border border-slate-100 rounded-2xl text-slate-400 hover:text-indigo-600 hover:bg-slate-50 transition-all shadow-sm">
                  <Filter size={20} strokeWidth={2.5} />
@@ -95,9 +138,9 @@ export default function Dashboard() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <KpiCard title="Studio Throughput" value="12,450" trend={15.8} isPositive={true} />
-            <KpiCard title="Retention Baseline" value="363.9s" trend={34.0} isPositive={false} />
-            <KpiCard title="Viral Velocity" value="86.5%" trend={24.2} isPositive={true} />
+            <KpiCard title="Studio Throughput" value={currentKpi.throughput} trend={currentKpi.throughputTrend} isPositive={currentKpi.throughputPos} />
+            <KpiCard title="Retention Baseline" value={currentKpi.retention} trend={currentKpi.retentionTrend} isPositive={currentKpi.retentionPos} />
+            <KpiCard title="Viral Velocity" value={currentKpi.velocity} trend={currentKpi.velocityTrend} isPositive={currentKpi.velocityPos} />
           </div>
         </section>
 
@@ -115,7 +158,7 @@ export default function Dashboard() {
                     <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-1">Cross-platform US Analysis</p>
                   </div>
                 </div>
-                <button onClick={() => window.location.reload()} className="p-4 hover:bg-slate-50 rounded-2xl text-slate-400 transition-all border border-slate-50 hover:border-slate-100">
+                <button onClick={() => fetchTrends(true)} className="p-4 hover:bg-slate-50 rounded-2xl text-slate-400 transition-all border border-slate-50 hover:border-slate-100">
                   <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
                 </button>
               </div>

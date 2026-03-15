@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const time = searchParams.get('time') || '7d';
+
   // Simulating trending topics from US. 
   const allTopics = [
     { title: "AI replacing jobs", source: "Reddit", hotness: 95 },
@@ -19,10 +22,21 @@ export async function GET() {
     { title: "Sustainable Food Solutions", source: "GreenPeace", hotness: 76 }
   ];
 
-  // Rotate based on day of year
-  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
-  const start = (dayOfYear % allTopics.length);
-  const topics = [...allTopics.slice(start), ...allTopics.slice(0, start)].slice(0, 10);
+  let shuffled = [...allTopics];
+  if (time === '24h') {
+    shuffled = shuffled.sort(() => 0.5 - Math.random());
+    shuffled = shuffled.map(t => ({...t, hotness: Math.min(99, t.hotness + 5)}));
+  } else if (time === '30d') {
+    shuffled = shuffled.reverse();
+    shuffled = shuffled.map(t => ({...t, hotness: Math.max(60, t.hotness - 5)}));
+  } else {
+    // 7d default
+    const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
+    const start = (dayOfYear % allTopics.length);
+    shuffled = [...allTopics.slice(start), ...allTopics.slice(0, start)];
+  }
+
+  const topics = shuffled.slice(0, 10);
 
   return NextResponse.json(topics);
 }
