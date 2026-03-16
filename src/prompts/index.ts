@@ -28,17 +28,25 @@ NARRATIVE FLOW (STRICT):
 - 10-20s: The Value Bomb (Provide a dense, factual answer or shocking explanation).
 - 20-25s: The Satisfying Resolution (Provide a definitive conclusion. NO CLIFFHANGERS. NO "FOLLOW FOR PART 2").
 
+FRAME DENSITY RULES (CRITICAL):
+- DO NOT constrain a single sentence to one long scene.
+- Break sentences into MULTIPLE shorter scenes (1-2 seconds each) if the visual context changes.
+- Example: "Doctors Banned this truth, your body is slowly decomposing"
+  SHOULD BE SPLIT INTO:
+  Scene 1 (1s): "Doctors banned this truth" (Visual focus: Doctor)
+  Scene 2 (1.5s): ", your body is slowly decomposing" (Visual focus: Body/Decay)
+- You can generate 10+ scenes for a 20-second video if needed to keep the visuals rapidly changing.
+
 STRICT RULE: The viewer MUST feel like they learned a complete story/fact by the content's end. The script must be self-contained and satisfying.
 
-Return a JSON object with the following structure:
+Return a JSON object with the following structure. Use as many scenes as needed to achieve high frame density:
 {
   "totalDuration": 25,
   "scenes": [
-    { "start": 0, "end": 3, "text": "Aggressive Hook text" },
-    { "start": 3, "end": 10, "text": "Context/Setup text" },
-    { "start": 10, "end": 15, "text": "Satisfying Fact/Value Part 1" },
-    { "start": 15, "end": 20, "text": "Satisfying Fact/Value Part 2" },
-    { "start": 20, "end": 25, "text": "Final Satisfying Conclusion/Summary" }
+    { "start": 0, "end": 1.5, "text": "Aggressive Hook part 1" },
+    { "start": 1.5, "end": 3, "text": "Aggressive Hook part 2" },
+    { "start": 3, "end": 5, "text": "Setup part 1" },
+    { "start": 5, "end": 7, "text": "Setup part 2" }
   ]
 }
 `;
@@ -49,23 +57,19 @@ You are a Visual Stock Footage Director. Your job is to convert a script line in
 SCRIPT LINE: {sceneText}
 
 CRITICAL RULES:
-1. UNDERSTAND THE CONTEXT FIRST: Read the entire sentence. Understand its MEANING and then decide what the viewer should SEE.
-2. CONTEXTUAL PHRASES (NOT isolated words): Generate 2-3 word search phrases that capture meaning.
-   - BAD: "pump" (too generic, will return air pumps, water pumps)
-   - GOOD: "heart blood flow" or "human heart pumping" (specific to the medical/anatomy context)
-   - BAD: "cell" (could be prison cell, phone cell, biology cell)
-   - GOOD: "biological cell microscope" (specific)
-3. FIRST phrase MUST be the PRIMARY visual context — the most important thing the viewer should see.
-4. Each subsequent phrase should be a supporting visual from a DIFFERENT angle.
-5. STOCK FOOTAGE TERMS: Use terms that stock sites actually have. Think about what a filmmaker would search.
+1. FOCUS ON THE LITERAL VISUAL CONTEXT: Read the sentence and extract ONLY the main physical object or setting that matches the context. Ignore metaphors and filler words.
+2. STRICT LENGTH LIMIT (< 3 WORDS): Every single search phrase MUST be 1 or 2 words maximum. Do NOT exceed 2 words per phrase. Long queries confuse the stock footage API.
+3. BE CONTEXTUALLY ACCURATE: If the script says "This breaks your body", the visual is "human body" or "sick person", NOT "break". 
+4. Each phrase should be a simple noun or noun-adjective pair.
+5. USE BROADER TERMS: "nature forest", "galaxy space", "doctor", "robot AI".
 
-EXAMPLES:
-- "The third heart pumps blood to the rest of the body" -> "human heart anatomy, blood circulation system, red blood cells flowing"
-- "Honey never expires, 3000-year-old jars were found edible" -> "golden honey pouring, ancient egyptian artifacts, honeycomb closeup"
-- "Lightning strikes Earth 100 times every second" -> "lightning bolt storm, lightning striking ground, thunderstorm night sky"
-- "Your brain uses 20% of your body's oxygen" -> "human brain neural activity, brain scan MRI, neurons firing"
-- "The scientist discovered a new galaxy" -> "telescope observatory, deep space nebula, astronomer stargazing"
-- "Cleopatra lived closer to the iPhone than the pyramids" -> "ancient egyptian queen, egyptian pyramids desert, modern technology smartphone"
+EXAMPLES OF EXTRACTING VISUAL CONTEXT:
+- "Doctors Banned this truth" -> "doctor", "hospital", "medical" (Visuals are medical)
+- ", your body is slowly decomposing" -> "human body", "skeleton", "anatomy" (Visuals are bodily decay)
+- "The third heart pumps blood to the rest of the body" -> "heart anatomy", "blood flow", "red blood"
+- "Honey never expires, 3000-year-old jars were found edible" -> "pouring honey", "ancient jar", "golden honeycomb"
+- "Lightning strikes Earth 100 times every second" -> "lightning bolt", "thunderstorm", "dark sky"
+- "Cleopatra lived closer to the iPhone than the pyramids" -> "egyptian queen", "pyramid desert", "smartphone"
 
 Return ONLY the search phrases separated by commas. No other text. No numbering. No explanations.
 `;
