@@ -48,12 +48,13 @@ TOPIC: ${pkg.topic}
 HOOK: ${pkg.hook}
 
 SCRIPT:
-${pkg.script.map(s => `[${s.start}-${s.end}s] ${s.text}`).join('\n')}
+${pkg.script.map(s => s.text).join('\n')}
 
 METADATA:
 Titles: ${pkg.titles.join(' | ')}
 Desc: ${pkg.description}
 Tags: ${pkg.hashtags.join(' ')}
+Viral Strategy: ${pkg.viralStrategy || 'N/A'}
 
 ASSETS:
 ${pkg.script.map((s, i) => `Scene ${i+1}: ${s.assets?.[0]?.url || 'N/A'}`).join('\n')}
@@ -280,6 +281,47 @@ ${pkg.script.map((s, i) => `Scene ${i+1}: ${s.assets?.[0]?.url || 'N/A'}`).join(
                     onRefreshAssets={() => findAssetsForScene(i, scene.text)}
                   />
                 ))}
+
+                {/* Additional Details: Script without timestamps & Viral elements */}
+                <div className="glass-card bg-white p-8 border border-slate-200 mt-4 space-y-10">
+                  <div>
+                    <h4 className="text-[12px] uppercase tracking-[0.3em] text-indigo-600 font-extrabold mb-6 flex items-center gap-3">
+                       <Film size={18} />
+                       Point-Wise Script Content
+                    </h4>
+                    <ul className="space-y-4 list-disc pl-6 text-slate-800 text-lg font-medium leading-[1.6]">
+                      {pkg.script.map((scene, i) => (
+                        <li key={i}>{scene.text}</li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {pkg.viralStrategy && (
+                    <div className="pt-6 border-t border-slate-100">
+                      <h4 className="text-[12px] uppercase tracking-[0.3em] text-indigo-600 font-extrabold mb-6 flex items-center gap-3">
+                         <Zap size={18} />
+                         Viral Strategy & Growth Elements
+                      </h4>
+                      <div className="bg-indigo-50/70 p-6 rounded-2xl border border-indigo-100">
+                        <p className="text-slate-800 font-bold leading-[1.7] whitespace-pre-line text-base">{pkg.viralStrategy}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="pt-6 border-t border-slate-100">
+                     <h4 className="text-[12px] uppercase tracking-[0.3em] text-indigo-600 font-extrabold mb-6 flex items-center gap-3">
+                        <Check size={18} />
+                        Trending Hashtags
+                     </h4>
+                     <div className="flex flex-wrap gap-3">
+                      {pkg.hashtags.map((tag, i) => (
+                        <span key={i} className="text-sm font-black text-slate-700 bg-slate-100 px-4 py-2 rounded-xl border border-slate-200 hover:bg-slate-200 transition-colors cursor-default">
+                          {tag}
+                        </span>
+                      ))}
+                     </div>
+                  </div>
+                </div>
               </div>
             </div>
           </section>

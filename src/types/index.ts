@@ -26,6 +26,7 @@ export interface VideoPackage {
   titles: string[];
   description: string;
   hashtags: string[];
+  viralStrategy?: string;
   createdAt?: string;
 }
 

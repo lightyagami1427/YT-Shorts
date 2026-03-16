@@ -77,11 +77,13 @@ Include:
 - 5 clickbait titles.
 - A concise description (3-4 sentences).
 - 5 highly relevant hashtags.
+- A viral strategy explaining how the video can go viral and other important elements.
 
 Return as a JSON object:
 {
   "titles": ["title1", "title2", ...],
   "description": "...",
-  "hashtags": ["#tag1", "#tag2", ...]
+  "hashtags": ["#tag1", "#tag2", ...],
+  "viralStrategy": "..."
 }
 `;
